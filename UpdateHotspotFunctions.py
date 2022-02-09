@@ -158,8 +158,51 @@ def implementLinkChanges(mainDir, imageID, hsList):
     os.rename(mainDir + "/app-files/data.js.txt", mainDir + "/app-files/data.js") # Change the name of the new/updated file to the original file's name
 
 # Imports a list of info hotspots for a given image, and uses these to update the data.js file at the given filepath
-def implementInfoChanges():
-    print('yeh ok')
+def implementInfoChanges(mainDir, imageID, hsList):
+    with open(mainDir + "/app-files/data.js", 'r') as fr:
+        lines = fr.readlines()
+
+        with open(mainDir + "/app-files/data.js.txt", 'w+') as fw:
+            atEditImage = False
+            atInfoList = False
+            ii = 0 # Iterator Variable
+
+            # Find correct data entry and start of info hotspots of this entry
+            while not atInfoList and ii < len(lines):
+                if atEditImage and (lines[ii].strip('\n') == "      \"infoHotspots\": [" or lines[ii].strip('\n') == "      \"infoHotspots\": []"):
+                    atInfoList = True
+                elif lines[ii].strip('\n') == f"      \"id\": \"{imageID}\",":
+                    atEditImage = True # Allows first condition of if/else block to be true now that correct data entry is being searched
+                    fw.write(lines[ii])
+                else:
+                    fw.write(lines[ii])
+                ii += 1
+
+            if len(hsList) == 0: # No links for given image
+                fw.write("      \"infoHotspots\": []\n")
+            else: # Write all hotspots in given list to data.js file
+                fw.write("      \"infoHotspots\": [\n")
+                hotspotsWritten = 0
+                for hs in hsList:
+                    fw.write(hs.toString())
+                    hotspotsWritten += 1
+                    if hotspotsWritten < len(hsList):
+                        fw.write(',')
+                    fw.write('\n')
+                fw.write("      ]\n")
+
+            # Print remaining data back into file
+            pastRelevantData = False
+            while ii < len(lines):
+                if pastRelevantData:
+                    fw.write(lines[ii])
+                elif lines[ii].startswith("    }"):
+                    pastRelevantData = True
+                    fw.write(lines[ii])
+                ii += 1
+
+    os.remove(mainDir + "/app-files/data.js") # Remove the original file
+    os.rename(mainDir + "/app-files/data.js.txt", mainDir + "/app-files/data.js") # Change the name of the new/updated file to the original file's name
 
 # Using the given parameters, will create a new Link Hotspot, and add it to the list
 def addLinkHotspot(hsList, idList, newYaw, newPitch, newTarget, initYaw):

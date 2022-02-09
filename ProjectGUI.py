@@ -74,12 +74,10 @@ while continueProgram: # Continue if valid main tour directory entered and exit 
             elif sel2 == 'del' and continueProgram and continueHotspots:
                 hotspotList, infoTitleList, changesUnsaved = pgf.deleteHotspotPopup(hotspotList, infoTitleList, modifiedHotspotID, imageSelected, 'Info', changesUnsaved)
             elif sel2 == 'save' and continueProgram and continueHotspots:
-#                uhf.implementInfoChanges(mainDirPath, imageSelected, hotspotList)
-                print('yehnana save')
+                uhf.implementInfoChanges(mainDirPath, imageSelected, hotspotList)
                 changesUnsaved = False
 
         if changesUnsaved: # Checks if changes are saved, if not ask the user, this will occur on exit and on 'Going Back'
             saveSelection = pgf.saveChangesPopup()
             if saveSelection == 'y':
-#                uhf.implementInfoChanges(mainDirPath, imageSelected, hotspotList) # Save changes if chosen by user
-                print('yehnana')
+                uhf.implementInfoChanges(mainDirPath, imageSelected, hotspotList) # Save changes if chosen by user
