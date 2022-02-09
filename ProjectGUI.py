@@ -18,9 +18,10 @@ while continueProgram: # Continue if valid main tour directory entered and exit 
     selection, continueProgram = pgf.mainMenu(mainDirName)
 
     if selection == 'update' and continueProgram: # Prompts user to update file and lets them select a list file and update directory
-        updDirPath, updDirName, listPath, listName, continueProgram, goBack = pgf.selectSupportDataMenu()
+        updDirPath, updDirName, listPath, listName, continueProgram, goBack = pgf.selectSupportDataMenu(mainDirPath)
 
         if continueProgram and not goBack: # Continue if valid files/directories are given and the exit button is not clicked
+            pgf.updateTourPopup(mainDirPath, listPath, updDirPath)
             logfileName, errors = um.performMapUpdate(mainDirPath, listPath, updDirPath, mainDirName)
             pgf.updateCompletePopup(mainDirPath, listPath, updDirPath, logfileName, errors)
             # Update process complete, go back to function selection menu
@@ -28,6 +29,7 @@ while continueProgram: # Continue if valid main tour directory entered and exit 
         listPath, listName, continueProgram, goBack = pgf.selectImageListMenu()
 
         if continueProgram and not goBack: # Continue if valid list file is provided
+            pgf.updateTourPopup(mainDirPath, listPath, 'N/A')
             logfileName = um.performMenuUpdate(listPath, mainDirPath, mainDirName, '', True)
             pgf.updateCompletePopup(mainDirPath, listPath, 'N/A', logfileName, 'N/A')
     elif selection == 'link' and continueProgram:

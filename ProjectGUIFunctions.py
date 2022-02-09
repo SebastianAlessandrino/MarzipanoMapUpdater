@@ -61,7 +61,7 @@ def mainMenu(tourName):
 
 # Will prompt the user to input paths to the supporting data (Image List and Update Directory)
 # Will utilise validation functions to ensure that inputs are correct
-def selectSupportDataMenu():
+def selectSupportDataMenu(mainDirPath):
     supMenuLayout = [   [sg.Text('Select Image List (CSV File) and Update Tour (Main Folder):')],
                         [sg.Text('List File:  ', size=(10,1)), sg.InputText(), sg.FileBrowse()],
                         [sg.Text('Tour Folder:', size=(10,1)), sg.InputText(), sg.FolderBrowse()],
@@ -86,6 +86,12 @@ def selectSupportDataMenu():
             if not values == None:
                 validList, listErrMsg, listName = validateList(values[0])
                 validDir, dirErrMsg, updateDirName = validateMainDir(values[1])
+
+                if values[1] == mainDirPath: # If the main and update paths are the same, invalid
+                    validDir = False
+                    dirErrMsg = 'The Update Directory must not be the same as the Main Tour to be updated!'
+                    # Can override the error message from before since if the paths are the same, the directory must be valid since the main dir is valid
+
                 if validDir and validList: # If both are valid then assign values and exit loop
                     listPath = values[0]
                     updateDirPath = values[1]
@@ -456,6 +462,28 @@ def errorPopup(errMsg):
         if event == sg.WIN_CLOSED or event == 'ok':
             break
     errPop.close()
+
+# Returns a window layout that tells the user that the tour file is being updated such that they do not close the program
+# whilst this is occurring
+def updateTourPopup(mainTourPath, listFilePath, updTourPath):
+    popupLayout = [ [sg.Text('THE PROGRAM IS ABOUT TO BEGIN AN UPDATE USING THE FOLLOWING DATA:')],
+                    [sg.Text('Selected Tour:', size=(10,1)), sg.Text(f'{mainTourPath}')],
+                    [sg.Text('List File:', size=(10,1)), sg.Text(f'{listFilePath}')],
+                    [sg.Text('Update Tour:', size=(10,1)), sg.Text(f'{updTourPath}')],
+                    [sg.Text('')],
+                    [sg.Text('DO NOT CLOSE THE PROGRAM WHILST THIS IS OCCURRING!!!')],
+                    [sg.Text('DOING SO MAY CAUSE SEVERE DAMAGE TO THE TOUR FILE!!!')],
+                    [sg.Text('')],
+                    [sg.Text('Press \'OK\' or close this popup to commence the update...')],
+                    [sg.Button('OK',key='ok',size=(10,1))]]
+
+    popup = sg.Window('IMPORTANT: About to Update', popupLayout)
+    while True:
+        event, _ = popup.read()
+        if event == sg.WIN_CLOSED or event == 'ok':
+            break
+    popup.close()
+    return popup
 
 # Opens a window with a message indicating the name and location of the logfile produced during the update
 def updateCompletePopup(mainTourPath, listFilePath, updTourPath, logfile, errors):

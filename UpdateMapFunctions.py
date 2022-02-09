@@ -234,7 +234,7 @@ def updateImageMenu(image_data_list, filePath, projectName):
                 if lines[ii].startswith('<title>'): # Insert correct title for file
                     fw.write(f'<title>{projectName}</title>\n')
                 elif lines[ii].startswith('<body'): # <body> line must be set to multiple images for menu to display
-                    fw.write('<body class=\"multiple-scenes view-control-buttons\">')
+                    fw.write('<body class=\"multiple-scenes view-control-buttons\">\n')
                 else: # Print line normally
                     fw.write(lines[ii])
                 ii += 1
