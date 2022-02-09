@@ -228,7 +228,7 @@ def updateImageMenu(image_data_list, filePath, projectName):
             ii = 0 # Iterator Variable
 
             # Iterate until scenes section is found
-            while not atSceneList:
+            while not atSceneList and ii < len(lines):
                 if lines[ii].strip('\n') == "  <ul class=\"scenes\">":
                     atSceneList = True
                 if lines[ii].startswith('<title>'): # Insert correct title for file
