@@ -7,7 +7,7 @@
 # Desc.: Will update the folder so that error handling is moved/improved and main program is called as a function
 #        from ProjectGUI.py to allow for easier use
 
-import sys
+import pandas as pd
 import os
 from os import path
 import csv
@@ -25,7 +25,8 @@ def performMapUpdate(mainDirPath, listPath, updDirPath, projectName):
     logFileName = lf.logInit(mainDirPath, listPath, updDirPath)
 
     # Start by removing old data
-    with open(listPath) as list_file:
+    actualListPath = makeCSVFromExcel(mainDirPath, listPath)
+    with open(actualListPath) as list_file:
         list_images = list(csv.reader(list_file)) # Get the list of images
         list_images.pop(0) # Remove headings from the list
         
@@ -47,7 +48,7 @@ def performMapUpdate(mainDirPath, listPath, updDirPath, projectName):
             ii += 1
 
     # Get list data again as a result of 'popping' elements from the previous list
-    with open(listPath) as list_file:
+    with open(actualListPath) as list_file:
         list_images = list(csv.reader(list_file)) # Get the list of images
         list_images.pop(0) # Remove headings from the list
 
@@ -94,6 +95,7 @@ def performMapUpdate(mainDirPath, listPath, updDirPath, projectName):
     umf.replaceSettingsText(mainDirPath + "/app-files/data.js", projectName)
     umf.correctAllIDs(idToReplace, mainDirPath + "/app-files/data.js")
     performMenuUpdate(listPath, mainDirPath, projectName, logFileName)
+    delListCSVFile(actualListPath) # Delete temporary list csv file
 
     # Summarise the actions of the program in the Log File and determine what message to return to the user
     errorsOccurred = lf.logSummary(logFileName)
@@ -104,9 +106,11 @@ def performMenuUpdate(listPath, dirPath, projectName, logFileName, onlyUpdateMen
     if onlyUpdateMenu:
         newLogFileName = lf.logInit(dirPath, listPath, 'N/A')
 
-    with open(listPath) as listFile:
+    actualListPath = makeCSVFromExcel(dirPath, listPath)
+    with open(actualListPath) as listFile:
         listImages = list(csv.reader(listFile)) # Get the list of images
         listImages.pop(0) # Remove headings from the list
+    delListCSVFile(actualListPath) # Delete temporary list csv file
 
     dataToPrioritise = umf.updateImageMenu(listImages, dirPath + "/app-files/index.html", projectName)
     umf.rearrangeDataFile(dataToPrioritise, dirPath + "/app-files/data.js", len(os.listdir(dirPath + "/app-files/tiles/")), projectName)
@@ -117,3 +121,16 @@ def performMenuUpdate(listPath, dirPath, projectName, logFileName, onlyUpdateMen
     else:
         lf.logMenu(newLogFileName, dataToPrioritise)
     return newLogFileName
+
+# Takes the input excel file and converts it to csv to be used in the program
+def makeCSVFromExcel(mainDirPath, listPath):
+    csvFileName = mainDirPath + '/tempList.csv'
+    if not path.isfile(csvFileName):
+        data = pd.read_excel(listPath, keep_default_na=False)
+        data.to_csv(csvFileName, index=False)
+    return csvFileName
+
+# Checks that the given path exists and then deletes it
+def delListCSVFile(csvPath):
+    if path.isfile(csvPath):
+        os.remove(csvPath)

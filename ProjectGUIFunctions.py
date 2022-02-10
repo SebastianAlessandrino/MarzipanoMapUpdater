@@ -544,12 +544,12 @@ def validateList(filePath):
     fileName = filePathParts[len(filePathParts)-1]
     if not filePath == "":
         if path.isfile(filePath):
-            if fileName.endswith('.csv'):
+            if fileName.endswith('.xlsx') or fileName.endswith('.xls'):
                 valid = True
             else:
-                outputStr = f"Provided file '{fileName}' is not a CSV file!"
+                outputStr = f"Provided file '{fileName}' is not an Excel file (.xlsx or .xls)!"
         else:
-            outputStr = "Provided path is not a CSV file!"
+            outputStr = "Provided path is not an Excel spreadsheet file!"
     else:
         outputStr = "No list file provided!"
 
