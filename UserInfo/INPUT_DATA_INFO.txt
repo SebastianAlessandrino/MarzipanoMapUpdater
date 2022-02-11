@@ -1,1 +1,74 @@
-word
+WRITTEN BY: 	Sebastian Alessandrino
+DATE:		11/02/2022
+PURPOSE:	Provides context on the files required for using the MarzipanoMapUpdater application.
+
+-----------------------------
+Marzipano Tour Project Folder
+-----------------------------
+Marzipano Tour Project Folders are folders containing a number of folders required for a map/tour.
+Generally, when exporting them from the Marzipano Tool, they already come in the correct format,
+but it is important to note what this format is. They include the following files/folders under the
+app-files directory/folder:
+ - img/
+ - tiles/
+ - vendor/
+ - data.js
+ - index.html
+ - index.js
+ - style.css
+
+The contents of the 'image/' and 'vendor/' folders are filled when exporting from the Marzipano tool.
+
+The 'tiles/' folder will containing the images that are displayed in a tour and must include at
+least one image folder to be used in the MarzipanoMapUpdater application. Furthermore, when updating,
+this folder in the Update Tour will be accessed so that its contents can be copied over if their corresponding
+ID exists within the Image List File (explained below).
+
+The 'data.js' file includes all of the data relating to views and hotspots of the images currently within
+the project. This file is the main document edited during running of the application.
+
+The 'index.html' file is also updated significantly during the application and contains data which will be used
+by a web server to provide the tour.
+
+'index.js' and 'style.css' are taken directly from the output of the Marzipano Tool and are not edited by the
+updater program. 
+
+
+-----------------------------
+Image List File
+-----------------------------
+The Image List file is an excel spreadsheet that contains information about each image to be included in
+a given tour project. It is used when updating either the entire project or just its menu.
+If images listed on the Image List have the same name as an image in an update tour folder, it will
+then move and adapt the data from the update folder to the specified main tour. As such, this means that
+not all entered data in the Image List spreadsheet will be in the main tour at any given time, only that
+when updating, if a particular ID is detected, then it will be added to the tour that is being updated.
+
+It is advised that only images that are about to be added to the project be included in the Image List
+file to avoid confusion. Furthermore, it is also suggested that when an image is to be removed from the
+selected tour, that it is done so by removing it from the Image List. This will cause all data relevant
+to that image to be removed when next updating. Replacing an old ID with a new one will have a similar
+effect in that the removed ID is taken out of the project and the newly entered one is introduced.
+
+If making a new Image List file, the following format must be adhered to:
+
+It is very important that the format of the Image List file be correct. Cells in Row 1 should be as follows:
+	1A: 'Num.'
+	1B: 'Name'
+	1C: 'ID'
+	1D: 'Include in Menu'
+	1E: 'Comment'
+
+For all rows below Row 1 (up to a value specified by the user):
+First column:	Incrementing numbers starting from 0, must be filled to end of desired list length
+
+Second column:	A string representing the name of the image, can be blank
+
+Third column:	The ID of the image, use the following format to automatically fill this cell (Row 2 used as an example)
+		'=IF(ISBLANK(B2),"N/A",CONCAT(A2,"-",LOWER(SUBSTITUTE(B2," ","-"))))'
+
+Fourth column:	Should be either 'y' or 'n' based on whether the image should appear in the menu, can be blank (assumed 'n')
+
+Fifth column: Comments, not used for logic in program
+
+It is also advised that all other cells not mentioned above be left blank.
