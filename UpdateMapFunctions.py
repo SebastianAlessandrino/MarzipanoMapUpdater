@@ -6,7 +6,6 @@
 # Update: 07/02/2022
 # Removed the requirement for having the same number of hotspots for one image that is replacing another
 
-from re import L
 import shutil
 import os
 

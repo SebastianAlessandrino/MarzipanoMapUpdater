@@ -8,6 +8,7 @@ from os import path
 import os
 import UpdateHotspotFunctions as uhf
 from Hotspot import Hotspot # For using validation functions
+import pandas as pd
 
 # Produces a window that prompts the user to input the folder of the main tour to be edited or updated by the rest of the program
 # The code will loop until a valid tour file is provided
@@ -262,7 +263,7 @@ def editLinkHotspotMenu(hotspotList, hotspotIDList, chosenHS, imgList, unsavedCh
                             [sg.Text('New pitch must be in degrees and >-90 and <=90 where +ve pitch is down and -ve is up.')],
                             [sg.Text('NEW YAW:', size=(10,1)), sg.InputText(size=(45,1))],
                             [sg.Text('NEW PITCH:', size=(10,1)), sg.InputText(size=(45,1))],
-                            [sg.Text('NEW TARGET:', size=(10,1))],
+                            [sg.Text('NEW TARGET:')],
                             [sg.Listbox(values=imgList, size=(60,10))],
                             [sg.Button('Update Hotspot', key='edt', size=(25,1)), sg.Button('Cancel', key='cancel', size=(25,1))]]
 
@@ -545,7 +546,12 @@ def validateList(filePath):
     if not filePath == "":
         if path.isfile(filePath):
             if fileName.endswith('.xlsx') or fileName.endswith('.xls'):
-                valid = True
+                data = pd.read_excel(filePath, keep_default_na=False) # Ensure file header is valid, therefore file is assumed valid
+                hdrs = data.columns.values.tolist()
+                if hdrs[0] == 'Num.' and hdrs[1] == 'Name' and hdrs[2] == 'ID' and hdrs[3] == 'Include in Menu' and hdrs[4] == 'Comment':
+                    valid = True
+                else:
+                    outputStr = f"Ensure given file is an Image List file with the appropriate headers! See Wiki for Details!"
             else:
                 outputStr = f"Provided file '{fileName}' is not an Excel file (.xlsx or .xls)!"
         else:
