@@ -1,8 +1,6 @@
 PROGRAM NAME:	MarzipanoMapUpdater
 DATE (README):	11/02/2022
 WRITTEN BY:	Sebastian Alessandrino
-CONTACT NUM.:	0497 042 731
-CONTACT EMAIL:	sebastianalessandrino@gmail.com
 
 
 PURPOSE:
