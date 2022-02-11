@@ -1,2 +1,0 @@
-include info about each of the functions of the program
-and how to use
