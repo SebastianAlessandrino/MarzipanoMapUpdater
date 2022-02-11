@@ -476,15 +476,20 @@ def updateTourPopup(mainTourPath, listFilePath, updTourPath):
                     [sg.Text('DOING SO MAY CAUSE SEVERE DAMAGE TO THE TOUR FILE!!!')],
                     [sg.Text('')],
                     [sg.Text('Press \'OK\' or close this popup to commence the update...')],
-                    [sg.Button('OK',key='ok',size=(10,1))]]
+                    [sg.Button('OK',key='ok',size=(10,1)), sg.Button('Cancel',key='cancel',size=(10,1))]]
 
+    continueUpdate = True
     popup = sg.Window('IMPORTANT: About to Update', popupLayout)
     while True:
         event, _ = popup.read()
         if event == sg.WIN_CLOSED or event == 'ok':
             break
+        elif event == 'cancel':
+            continueUpdate = False
+            break
+
     popup.close()
-    return popup
+    return continueUpdate
 
 # Opens a window with a message indicating the name and location of the logfile produced during the update
 def updateCompletePopup(mainTourPath, listFilePath, updTourPath, logfile, errors):
