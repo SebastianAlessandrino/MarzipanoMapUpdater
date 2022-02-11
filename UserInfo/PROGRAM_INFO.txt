@@ -1,1 +1,212 @@
-deeper description of each of the files + list of functions
+WRITTEN BY: 	Sebastian Alessandrino
+DATE:		11/02/2022
+PURPOSE:	Provides deeper explanation of each of the files that make up the application.
+		Files are listed in alphabetical order.
+		This file is an overview, therefore see respective files for inputs/outputs/code functionality.
+		Note that this means inputs and outputs are not represented when listing functions in this file.
+		Also note that this program was written in Python 3.9.
+		Imported libraries that were downloaded for the purpose of development include:
+			- pandas (and openpyxl)	- PySimpleGUI	- PyInstaller
+
+-------------------------
+Hotspot.py
+-------------------------
+This is an abstract class for which InfoHotspot and LinkHotspot classes are to inherit from.
+It is the basis for storing data about hotspots used in a Marzipano Tour project.
+This class includes information regarding the yaw and pitch of the Hotspot.
+Furthermore, it allows for the input of new yaw and pitch values which can then be used
+to determine relative values for use in the overall program.
+
+Fields:
+ - initYaw	: The initial yaw of the image in which the hotspot exists
+ - relativeYaw	: Difference between the initial yaw and true yaw
+ - trueYaw	: The actual yaw value of the hotspot
+ - truePitch	: The actual pitch value of the hotspot
+
+Functions:
+ - __init__()
+ - setTrueYaw()
+ - setTruePitch()
+ - getInitYaw()
+ - getRelativeYaw()
+ - getTrueYaw()
+ - getTruePitch()
+ - getRelativeYawDegrees()
+ - getTrueYawDegrees()
+ - getTruePitchDegrees()
+ - toString() (ABSTRACT)
+ - calcRelativeYaw()
+ - calcTrueYaw()
+ - validateYawDegrees()
+ - validatePitchDegrees()
+
+
+-------------------------
+InfoHotspot.py
+-------------------------
+A class inheriting from the Hotspot class in 'Hotspot.py'.
+This class stores data specific to Information Hotspots used in the MapUpdater project.
+It includes functions for considering the text and title of an Info Hotspot and provides an
+implementation for the abstract toString() method in 'Hotspot.py'.
+
+Fields:
+ - title	: The title displayed to the user of the info hotspot
+ - text		: The text displayed to the user of the info hotspot
+
+Functions:
+ - __init__()
+ - setTitle()
+ - setText()
+ - getTitle()
+ - getText()
+ - toString()
+
+
+-------------------------
+LinkHotspot.py
+-------------------------
+A class inheriting from the Hotspot class in 'Hotspot.py'.
+This class stores data specific to Image Linking Hotspots used in the MapUpdater project.
+It includes functions for considering the target of a Link Hotspot and provides an
+implementation for the abstract toString() method in 'Hotspot.py'.
+
+Fields:
+ - target	: The image to which the Link Hotspot links the current image
+
+Functions:
+ - __init__()
+ - setTarget()
+ - getTarget()
+ - toString()
+
+
+-------------------------
+LoggingFunctions.py
+-------------------------
+Provides functionality for logging the actions of the MarzipanoMapUpdater application when
+choosing to either 'Update Tour' or 'Update Tour Menu'. This includes information about added,
+deleted and replaced images as well as detailing errors if they occur.
+Information regarding editing of the projects menu is also logged using these functions.
+Note that logging is not added for adding, deleting or editing Hotspots since these changes
+are made one by one fully by the user.
+
+Functions:
+ - logInit()
+ - logNewImage()
+ - logReplaceImage()
+ - logRemoveImage()
+ - logFormError()
+ - logHotspotsError()
+ - logMenu()
+ - logSummary()
+
+
+-------------------------
+ProjectGUI.py
+-------------------------
+This is the main python script used to control the overall application/program.
+It does not contain any functions, instead using those from ProjectGUIFunctions.py, UpdateMap.py
+and UpdateHotspotFunctions.py.
+The code first asks the user to input the Main Tour file to be worked upon then loops through a
+set of menus that allow the user to edit the selected tour. When exitting a window through the
+'x' button, in most cases this will immediately close the program.
+This program is used to either update the entire tour folder or just edit certain elements of 
+image data such as hotspots (with the ability to introduce new ones and remove or edit ones
+that already exist within the tour data).
+
+
+-------------------------
+ProjectGUIFunctions.py
+-------------------------
+This file is used to contain the functions relevant to the GUI of the MarzipanoMapUpdater application.
+It handles all displayed windows and as a result, the input and output of values to the program.
+This includes the inputs of filepaths, inputs of numerical values for pitch and yaw and also selection
+of images to edit the data of through list boxes.
+Generally the prompt given to the user within a given window is proficient for directing them
+to move forwards in the program, but further information can be found in USER_GUIDE.txt and INPUT_DATA_INFO.txt.
+
+Functions:
+ - selectMainDirMenu()
+ - mainMenu()
+ - selectSupportDataMenu()
+ - selectImageListMenu()
+ - selectFromListMenu()
+ - hotspotMenu()
+ - addLinkHotspotMenu()
+ - editLinkHotspotMenu()
+ - addInfoHotspotMenu()
+ - editInfoHotspotMenu()
+ - deleteHotspotPopup()
+ - saveChangesPopup()
+ - errorPopup()
+ - updateTourPopup()
+ - updateCompletePopup()
+ - validateMainDir()
+ - validateList()
+ - listTourImages()
+ - labelIDList()
+ - formIHSEditLayout()
+
+
+-------------------------
+UpdateHotspotFunctions.py
+-------------------------
+This file was written to facilite the part of the program in which direct edits to hotspot objects are made.
+As such, data required to be included or removed from a given hotspot (or list of hotspots) is
+input to functions within this file and then used accordingly. Typically, these functions will return a list
+of some kind with either the Hotspot objects themselves or the list of IDs/Titles of said objects.
+
+Functions:
+ - listLinkHotspots()
+ - listInfoHotspots()
+ - implementLinkChanges()
+ - implementInfoChanges()
+ - addLinkHotspot()
+ - editLinkHotspot()
+ - addInfoHotspot()
+ - editInfoHotspot()
+ - deleteHotspot()
+ - copyHotspotList()
+ - copyIDList()
+
+
+-------------------------
+UpdateMap.py
+-------------------------
+The code in this file facilitates the first two functions of the MarzipanoMapUpdater application.
+This is updating the entire specified tour file or just the menu file.
+The function for updating the map directory is somewhat verbose as it was adjusted from originally being
+a standalone program to being used within this project.
+This file also contains code for creating a CSV document from the provided Excel file which is required
+to allow for easier analysis and input of data (in regards to the Image List file).
+
+Functions:
+ - performMapUpdate()
+ - performMenuUpdate()
+ - makeCSVFromExcel()
+ - delListCSVFile()
+
+
+-------------------------
+UpdateMapFunctions.py
+-------------------------
+This file contains the functionality required to support the function of 'UpdateMap.py'.
+It primarily deals with editting the data.js and index.html files of the specified 'Main Tour'.
+It also will access the similar data for the given 'Update Tour' and can copy image files
+between these two input directories if required.
+
+Functions:
+ - getImageIDText()
+ - getNameFromIDText()
+ - replaceImage()
+ - addNewImage()
+ - removeOldImage()
+ - appendImageData()
+ - removeImageData()
+ - removeSettingsText()
+ - replaceSettingsText()
+ - correctAllIDs()
+ - updateImageMenu()
+ - rearrangeDataFile()
+ - compareSimilarImageData()
+ - countHotspots()
