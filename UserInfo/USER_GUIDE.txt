@@ -138,5 +138,5 @@ In this menu, only the yaw and pitch fields must be entered. If no entry is made
 title or text fields, then it is assumed that there should be no change to the existing values.
 
 7.3. DELETE INFO:
-In this menu, all fields must be filled. If wishing to only change one or two parameters, then the
-listed current parameters at the top of the window can be re-entered/reselected.
+When selecting this option, a prompt is presented asking whether to actually delete the selected
+hotspot. If 'Yes' is selected, then the hotspot is removed from the list.
