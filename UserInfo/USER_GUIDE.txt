@@ -119,6 +119,8 @@ In this menu, all fields must be filled.
 6.2. EDIT LINK:
 In this menu, all fields must be filled. If wishing to only change one or two parameters, then the
 listed current parameters at the top of the window can be re-entered/reselected.
+Note that the current yaw shown in the given window is relative to the initial view yaw (which
+should be taken as 0 when making changes).
 
 6.3. DELETE LINK:
 When selecting this option, a prompt is presented asking whether to actually delete the selected
@@ -136,6 +138,8 @@ if desired.
 7.2. EDIT INFO:
 In this menu, only the yaw and pitch fields must be entered. If no entry is made to either of the
 title or text fields, then it is assumed that there should be no change to the existing values.
+Note that the current yaw shown in the given window is relative to the initial view yaw (which
+should be taken as 0 when making changes).
 
 7.3. DELETE INFO:
 When selecting this option, a prompt is presented asking whether to actually delete the selected
