@@ -1,2 +1,142 @@
-include info about each of the functions of the program
-and how to use
+WRITTEN BY: 	Sebastian Alessandrino
+DATE:		12/02/2022
+PURPOSE:	This file will act as a 'User Guide' for the MarzipanoMapUpdater application.
+		This means that an overview of the workings of the program will be given.
+		Required inputs and error cases will also be discussed.
+		Note that for a version of this document with images to help explanations,
+		if applicable, view the respective Telfer OT Wiki entry.
+		Note that barring menus for inputting data relevant to hotspots, pressing
+		the 'X' button on a window will typically close the entire application.
+
+
+1. NOTES BEFORE BEGINNING:
+The Update Tour folder (and Main Tour if starting new) must be first created as a tour in the Marzipano
+Tool. It is recommended that as many hotspots as possible are added during this stage and that names of
+new images (to the project overall) do not match those pre-existing in the Main Tour folder (and Image
+List) unless they are specifically intended to replace old images.
+
+Take note of images in which Link edits will need to occur when updating the project to ensure that
+images are not left unlinked when finished. It may be beneficial to make a backup of the 'data.js' file
+and contents of the tour's 'tiles/' folder prior to updating if new to the process.
+
+When updating elements of a Tour File, if it is currently running (which is expected), the update
+should occur on the same machine (the update application should be run from this machine.
+
+See the other 'User Info' files prior to commencing to ensure that a proper understanding of the
+input data and functionality is gained. Primarily ensure that the format of the Update Tour and
+Image List are correct.
+
+It is recommended that only one Image List file is used per project as otherwise, images could be
+deleted from the main tour without meaning to. Providing that the tour used to provide the images
+is still accessible, this issue can be fixed but will most likely involve updating the hotspots
+of many images.
+
+Ensure that the Image List file is updated with all images you wish to add during running of the
+program. It can be updated right up until the point that the tour update is started, but doing
+so earlier is recommended.
+
+
+2. ON PROGRAM START:
+When starting the program, the user will be prompted to input the file path to a 'Tour'.
+This tour must be a 'Marzipano Tour Project Folder' that you wish to update and must be in the
+form given in 'INPUT_DATA_INFO.txt'. Note that it is assumed that the chosen tour is being hosted
+from some web server whilst being edited as using the project whilst updating it will allow
+for the best control when choosing update parameters.
+
+
+3. MAIN MENU:
+Following the input of a 'Main Tour', the Main Menu will be presented to the user. Each of the
+functions of this menu will be explained in following sections. The available functions are:
+ - Update Tour		(see Section 4)
+ - Update Tour Menu	(see Section 5)
+ - Edit Image Links	(see Section 6)
+ - Edit Image Info	(see Section 7)
+ - Exit			(Closes the application)
+
+
+4. UPDATE TOUR:
+The process of 'updating the tour' will involve using the files of another tour folder to add to
+or replace images and data in the first selected tour project folder. For images to be added to the
+map, they must be present both in the provided Image List and with the same ID in the selected
+Update Tour Directory. If an image that already exists in the main tour is found in the update files
+(determined by whether they have the same name), then the data in the main tour will be replaced by
+that in the update tour. Lastly, if an image is found in the Main Tour folder that is no longer in
+the Image List spreadsheet, all of its data will be removed from the main project files. Note that
+replacing or deleting of images may require updates to link and info hotspots to be made. Also note
+that images in the Update Tour files that are not found on the Image List spreadsheet will not be
+added as part of the update and will produce an error in the resulting logfile.
+
+Upon selecting to update the tour, a menu asking for a 'List File' and 'Tour Folder' must be given.
+These must be in the form given in 'INPUT_DATA_INFO.txt' and the folder given must be different
+to that initially selected on opening the application. Upon clicking continue, the paths selected
+will be checked for validity and assuming they are valid, move onto a confirmation screen informing
+the user that an update is about to occur with the given files. On the update confirmation window,
+if the user clicks 'OK' or the 'X' button, the update will commence and when finished, will produce
+a menu to indicate that the update completed. This menu will include the number of errors that
+occurred during this procedure and a filepath to a logfile produced during the action.
+
+Note that the 'Update Tour' function will also update the menu of said tour as part of the process.
+If wishing only to update the menu, then the separate function 'Update Tour Menu' should be
+selected instead.
+
+
+5. UPDATE TOUR MENU:
+The process of 'updating the tour menu' only requires the input of the Image List file. The data
+used will primarily be that in the fourth column ('Include in Menu'). This will dictate whether a
+specific image is included in the tour's drop down menu. Note that images that are not currently
+in the project (but are in the Image List) can be selected as being included in the menu but will
+not actually change the image when clicked.
+
+The process is very similar to the 'Update Tour' function in that an 'Image List File' must be
+provided to facilitate the update. If considered valid, the user will then be prompted with a
+window indicating that the menu update is about to occur in which pressing 'OK' or the 'X' button
+will start the update. As with the 'Update Tour' function, once the menu update is completed, a
+window will be displayed to indicate this.
+
+
+6. EDIT IMAGE LINKS:
+This function allows the user to choose an image in the selected tour file and allows the opportunity
+to edit its data in relation to links to other images within the project. These links will allow the
+user of the tour/map to move between images like they would move between them if really at the given
+location. As such, it is important that if a link is made from one image to another, the user ensures
+they also create a link back from the second image to the first using the same process.
+
+For the 'Edit Image Links' function, the user will first be prompted to select one of the images from
+the chosen tour. They will then be given a list of the already existing link hotspots for that image.
+They can choose to: Add, Edit or Delete based on how they wish to change the image's data. Furthermore,
+there is also the option to 'Save Changes', meaning that if an undesired change is made, users can
+exit this menu without pressing this button and actually implementing it. This also means that changes
+must be saved manually before exiting. Also note that pressing the 'X' button whilst in any of these
+menus will not close the program, only cancel the action.
+
+Note that the 'Add' and 'Edit' functions require the input of a yaw, pitch and target. The 'yaw' and
+'pitch' correspond to the location of the hotspot within the image and are explained on the windows in
+the application. The target is the image that is to be linked to by the hotspot in question.
+
+6.1. ADD LINK:
+In this menu, all fields must be filled.
+
+6.2. EDIT LINK:
+In this menu, all fields must be filled. If wishing to only change one or two parameters, then the
+listed current parameters at the top of the window can be re-entered/reselected.
+
+6.3. DELETE LINK:
+When selecting this option, a prompt is presented asking whether to actually delete the selected
+hotspot. If 'Yes' is selected, then the hotspot is removed from the list.
+
+7. EDIT IMAGE INFO:
+This function is essentially the same as 'Edit Image Links' with the only difference being the
+parameters entered. Info bubbles on images require title and text parameters rather than a
+target as they're relevant only to the selected image.
+
+7.1. ADD INFO:
+In this menu, only the yaw and pitch fields must be entered. Title and/or text can be left blank
+if desired.
+
+7.2. EDIT INFO:
+In this menu, only the yaw and pitch fields must be entered. If no entry is made to either of the
+title or text fields, then it is assumed that there should be no change to the existing values.
+
+7.3. DELETE INFO:
+In this menu, all fields must be filled. If wishing to only change one or two parameters, then the
+listed current parameters at the top of the window can be re-entered/reselected.

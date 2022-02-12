@@ -162,7 +162,7 @@ def selectFromListMenu(title, text, imgList):
     return (selection, continueProgram, returnToMainMenu)
 
 # Lets the user select a function for the hotspots of a selected image
-def hotspotMenu(selectedImage, IDList, changesUnsaved):
+def hotspotMenu(selectedImage, IDList, changesUnsaved, hsType):
     labelledList = labelIDList(IDList)
     hotspotMenuLayout = [   [sg.Text(f'Add a hotspot or else choose one to edit or delete below:')],
                             [sg.Listbox(values=labelledList, size=(60,10))],
@@ -178,7 +178,7 @@ def hotspotMenu(selectedImage, IDList, changesUnsaved):
     menuActive = True
     continueProgram = True
     continueHotspots = True
-    hotspotMenuWindow = sg.Window(f'Link Hotspot Menu (Image: \'{selectedImage}\')', hotspotMenuLayout, element_justification='c')
+    hotspotMenuWindow = sg.Window(f'{hsType} Hotspot Menu (Image: \'{selectedImage}\')', hotspotMenuLayout, element_justification='c')
     while menuActive and continueProgram and continueHotspots:
         event, values = hotspotMenuWindow.read()
         if event == sg.WIN_CLOSED:

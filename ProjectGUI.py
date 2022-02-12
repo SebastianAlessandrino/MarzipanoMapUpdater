@@ -43,7 +43,7 @@ while continueProgram: # Continue if valid main tour directory entered and exit 
         if continueProgram and not goBack:
             hotspotList, hotspotIDList, initYaw = uhf.listLinkHotspots(mainDirPath, imageSelected)
         while continueProgram and continueHotspots and not goBack: # If image appropriately selected
-            sel2, modifiedHotspotID, continueProgram, continueHotspots = pgf.hotspotMenu(imageSelected, hotspotIDList, changesUnsaved)
+            sel2, modifiedHotspotID, continueProgram, continueHotspots = pgf.hotspotMenu(imageSelected, hotspotIDList, changesUnsaved, 'Link')
 
             if sel2 == 'add' and continueProgram and continueHotspots:
                 hotspotList, hotspotIDList, changesUnsaved = pgf.addLinkHotspotMenu(hotspotList, hotspotIDList, imageList, initYaw, changesUnsaved)
@@ -69,7 +69,7 @@ while continueProgram: # Continue if valid main tour directory entered and exit 
         if continueProgram and not goBack:
             hotspotList, infoTitleList, initYaw = uhf.listInfoHotspots(mainDirPath, imageSelected)
         while continueProgram and continueHotspots and not goBack:
-            sel2, modifiedHotspotID, continueProgram, continueHotspots = pgf.hotspotMenu(imageSelected, infoTitleList, changesUnsaved)
+            sel2, modifiedHotspotID, continueProgram, continueHotspots = pgf.hotspotMenu(imageSelected, infoTitleList, changesUnsaved, 'Info')
 
             if sel2 == 'add' and continueProgram and continueHotspots:
                 hotspotList, infoTitleList, changesUnsaved = pgf.addInfoHotspotMenu(hotspotList, infoTitleList, initYaw, changesUnsaved)
