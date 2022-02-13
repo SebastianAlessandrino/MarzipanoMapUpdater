@@ -523,10 +523,10 @@ def validateMainDir(dirPath, tourType = 'u'):
             if path.isdir(dirPath + '/app-files/tiles'):
                 if len(os.listdir(dirPath + '/app-files/tiles')) > 0:
                     if path.isfile(dirPath + '/app-files/data.js'):
-                        if tourType == 'u' or (tourType == 'm' and path.isfile(dirPath + '/app-files/index.html')): # Update Directory OR Main Directory AND index.html Exists
-                            valid = True
+                        if tourType == 'u' or (tourType == 'm' and path.isfile(dirPath + '/app-files/index.html') and path.isfile(dirPath + '/app-files/index.js')): 
+                            valid = True # ^^^ Update Directory OR Main Directory AND index.html AND index.js Exists
                         else:
-                            outputStr = f"Folder '.../{dirName}/app-files' does not contain an index.html file!"
+                            outputStr = f"Folder '.../{dirName}/app-files' must contain both an index.js and index.html file!"
                     else:
                         outputStr = f"Folder '.../{dirName}/app-files' does not contain a data.js file!"
                 else:

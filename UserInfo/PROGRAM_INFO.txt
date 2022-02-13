@@ -183,6 +183,7 @@ to allow for easier analysis and input of data (in regards to the Image List fil
 Functions:
  - performMapUpdate()
  - performMenuUpdate()
+ - checkIndexJSFile()
  - makeCSVFromExcel()
  - delListCSVFile()
 

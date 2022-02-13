@@ -122,6 +122,55 @@ def performMenuUpdate(listPath, dirPath, projectName, logFileName, onlyUpdateMen
         lf.logMenu(newLogFileName, dataToPrioritise)
     return newLogFileName
 
+# Will check that lines of code relevant for changing the initial view positions of images are in the index.js file
+# Updates the file accordingly if the relevant code is not present
+# Essentially ensures that if a new tour is being produced, the index.js file will be updated accordingly
+def checkIndexJSFile(mainDir):
+    with open(mainDir + "/app-files/index.js", 'r') as fr:
+        lines = fr.readlines()
+        alreadyUpdated = False
+        ii = 0
+
+        while not alreadyUpdated and ii < len(lines): # Check if necessary variable is already included
+            if (lines[ii].strip('\n')).endswith('var curSceneID = "";'):
+                alreadyUpdated = True
+            ii += 1
+        
+        if not alreadyUpdated: # If line was not found
+            ii = 0
+            with open(mainDir + "/app-files/index.js.txt", 'w+') as fw:
+                while ii < len(lines):
+                    if (lines[ii].strip('\n')).endswith('var fullscreenToggleElement = document.querySelector(\'#fullscreenToggle\');'): # Introduce new variable
+                        fw.write(lines[ii])
+                        fw.write('// Added by Updater Program\n')
+                        fw.write('  var curSceneID = "";\n')
+                        ii += 1
+                    elif (lines[ii].strip('\n')).endswith('function switchScene(scene) {'): # Start of function to edit
+                        fw.write(lines[ii])
+                        fw.write('    var idx = 0;\n    var foundHS = false;\n')
+                        fw.write('    stopAutorotate();\n    scene.view.setParameters(scene.data.initialViewParameters);\n')
+                        fw.write('    for (var i = 0; i < scene.data.linkHotspots.length; i++) {\n')
+                        fw.write('      if (curSceneID == scene.data.linkHotspots[i].target) {\n')
+                        fw.write('        idx = i;\n        foundHS = true;\n      }\n    }\n')
+                        fw.write('    if (foundHS) {\n      if (scene.data.linkHotspots[idx].yaw > 0) {\n')
+                        fw.write('        scene.view.setYaw(scene.data.linkHotspots[idx].yaw - Math.PI);\n')
+                        fw.write('      }\n      else {\n')
+                        fw.write('        scene.view.setYaw(scene.data.linkHotspots[idx].yaw + Math.PI);\n')
+                        fw.write('      }\n    }\n    scene.scene.switchTo();\n    startAutorotate();\n')
+                        fw.write('    updateSceneName(scene);\n    updateSceneList(scene);\n')
+                        fw.write('    curSceneID = scene.data.id;\n  }\n')
+                        while not (lines[ii].strip('\n')).endswith('updateSceneList(scene);'):
+                            ii += 1 # Go past old code
+                        while not (lines[ii].strip('\n')).endswith('}'): # Ensures that this loop only begins when the next '}' is the one you want to start writing from again
+                            ii += 1
+                        ii += 1
+                    else:
+                        fw.write(lines[ii])
+                        ii += 1
+    if path.isfile(mainDir + "/app-files/index.js.txt"):
+        os.remove(mainDir + "/app-files/index.js") # Remove the original file
+        os.rename(mainDir + "/app-files/index.js.txt", mainDir + "/app-files/index.js") # Change the name of the new file to the original file's name
+
 # Takes the input excel file and converts it to csv to be used in the program
 def makeCSVFromExcel(mainDirPath, listPath):
     csvFileName = mainDirPath + '/tempList.csv'

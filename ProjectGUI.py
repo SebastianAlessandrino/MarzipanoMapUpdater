@@ -13,6 +13,7 @@ from LinkHotspot import LinkHotspot
 sg.theme('SystemDefault')
 
 mainDirPath, mainDirName, continueProgram = pgf.selectMainDirMenu()
+um.checkIndexJSFile(mainDirPath)
 
 while continueProgram: # Continue if valid main tour directory entered and exit button not clicked
     selection, continueProgram = pgf.mainMenu(mainDirName)
